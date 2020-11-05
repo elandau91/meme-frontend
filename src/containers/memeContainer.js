@@ -1,4 +1,5 @@
 import React from 'react'
+import Meme from '../components/meme'
 
 
 function MemeContainer(props) {
@@ -11,7 +12,7 @@ function MemeContainer(props) {
             <h1>Test</h1>
             {props.memes.map(meme => {
                 return(
-                    <img src={meme.url}/>
+                <Meme meme={meme} />
                 )
             })}
             </>

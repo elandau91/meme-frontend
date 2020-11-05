@@ -5,12 +5,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import rootReducer from './reducers/rootReducer';
+import memeReducer from './reducers/memeReducer';
 import { Provider } from 'react-redux'
 
 function configureStore() {
   return createStore(
-    rootReducer,
+    memeReducer,
     applyMiddleware(thunk)
   );
  }
