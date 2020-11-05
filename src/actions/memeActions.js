@@ -1,6 +1,11 @@
-export const memeAction = () => dispatch => {
-    dispatch({
-     type: 'SIMPLE_ACTION',
-     payload: 'result_of_simple_action'
-    })
+export function fetchMemesAction() {
+    return (dispatch) => {
+        fetch('https://api.imgflip.com/get_memes')
+            .then(res => res.json())
+            .then(data => dispatch({
+                type: 'FETCH_MEMES',
+                memes: data.data.memes
+            }))
+
+    }
    }

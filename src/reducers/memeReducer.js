@@ -1,10 +1,14 @@
-export default (state = {}, action) => {
+const memeReducer = (state = {memes: []}, action) => {
     switch (action.type) {
-     case 'SIMPLE_ACTION':
+     case 'FETCH_MEMES':
+         //console.log(state.memes)
       return {
-       result: action.payload
+            ...state,
+            memes: action.memes
       }
      default:
       return state
     }
    }
+
+export default memeReducer

@@ -1,17 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
 import MemeContainer from './containers/memeContainer'
+import {connect} from 'react-redux'
+import {fetchMemesAction} from './actions/memeActions'
 
 
-
-
-function App() {
+function App(props) {
+  console.log(props)
   return (
     <div className="App">
       <p>Hiya</p>
-      <MemeContainer />
+      <button onClick={() => props.fetchMemesAction()}>Generate Memes</button>
+      <MemeContainer memes={props.memes}/>
     </div>
   );
 }
 
-export default App;
+function msp(state){
+  return {memes: state.memes}
+}
+
+export default connect(msp, {fetchMemesAction})(App);
