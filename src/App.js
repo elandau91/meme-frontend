@@ -12,7 +12,7 @@ function App(props) {
   return (
     <div className="App">
       <NavBar />
-      <p>Hiya</p>
+      <p>Memail</p>
       <Button variant="outline-secondary" onClick={() => props.fetchMemesAction()}>Generate Memes</Button>
       <br></br>
       <MemeContainer memes={props.memes}/>
