@@ -37,7 +37,6 @@
   }
 }
 
-.shuffled_img{
-  max-width: 400px;
-  max-height: 400px;
+.meme_cards{
+  padding: 10px 10px;
 }

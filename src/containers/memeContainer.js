@@ -1,5 +1,5 @@
 import React from 'react'
-import Meme from '../components/meme'
+import Meme from '../components/Meme'
 import CardColumns from 'react-bootstrap/CardColumns'
 
 
@@ -8,15 +8,14 @@ function MemeContainer(props) {
         return(
             <>
             {props.memes ?
-                <>
-                <CardColumns>
+
+                <CardColumns style={{margin: '0px 0px'}}>
                     {shuffled.slice(0,10).map(meme => {
                         return(
                         <Meme meme={meme} />
                         )
                     })}
                 </CardColumns>
-            </>
             :   
             null
             }
