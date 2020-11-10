@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
+import Form from 'react-bootstrap/Form'
 
 
 function Meme(props){
@@ -9,6 +10,11 @@ function Meme(props){
   
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const base_image = new Image();
+    base_image.src = props.meme.url;
+    const wrh = base_image.width / base_image.height;
+    const newWidth = 600;
+    const newHeight = newWidth / wrh;
 
 
     return(
@@ -32,7 +38,31 @@ function Meme(props){
             <Modal.Title>Customize {props.meme.name}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-              <img src={props.meme.url} />
+              {/* <img src={props.meme.url} /> */}
+              <svg
+              width={newWidth}
+              id="svg_ref"
+              height={newHeight}
+            //   ref={el => { this.svgRef = el }}
+              xmlns="http://www.w3.org/2000/svg"
+              xmlnsXlink="http://www.w3.org/1999/xlink">
+              <image
+                // ref={el => { this.imageRef = el }}
+                xlinkHref={props.meme.url}
+                height={newHeight}
+                width={newWidth}
+              />
+            </svg>
+              <div className="form">
+                <Form.Group>
+                    <Form.Label>Top Text</Form.Label>
+                    <Form.Control type="text" placeholder="Type here"/>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Bottom Text</Form.Label>
+                    <Form.Control type="text" placeholder="Type here"/>
+                </Form.Group>
+              </div>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
