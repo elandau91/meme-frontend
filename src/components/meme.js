@@ -21,11 +21,19 @@ function Meme(props){
             </Card.Body>
         </Card>
         
-        <Modal show={show} onHide={handleClose}>
+        <Modal 
+            show={show} 
+            onHide={handleClose}
+            size="lg"
+            backdrop="static"
+            keyboard={false}
+            >
           <Modal.Header closeButton>
             <Modal.Title>Customize {props.meme.name}</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+          <Modal.Body>
+              <img src={props.meme.url} />
+          </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Close
