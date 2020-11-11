@@ -10,20 +10,100 @@ function Meme(props){
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const [topY, setTopY] = useState("10%");
-    const [topX, setTopX] = useState("50%");
-    const [bottomY, setBottomY] = useState("90%");
-    const [bottomX, setBottomX] = useState("50%");
     const [toptext, setTopText] = useState("");
     const [bottomtext, setBottomText] = useState("");
+    // const [isTopDragging, setTopToggle] = useState(false);
+    // const [isBottomDragging, setBottomToggle] = useState(false);
 
-    //const topChangeHandler = (e) => setTopText({toptext: e.target.value})
+    const [coordinates, setCoordinates] = useState({
+      topY: "10%",
+      topX: "50%",
+      bottomY: "90%",
+      bottomX: "50%",
+      isTopDragging: false,
+      isBottomDragging: false
+    })
 
     const base_image = new Image();
     base_image.src = props.meme.url;
     const wrh = base_image.width / base_image.height;
     const newWidth = 600;
     const newHeight = newWidth / wrh;
+    const textStyle = {
+      fontFamily: "Impact",
+      fontSize: "50px",
+      textTransform: "uppercase",
+      fill: "#FFF",
+      stroke: "#000",
+      userSelect: "none"
+    }
+
+
+    const getStateObj = (e, type) => {
+      console.log(e.target.parentElement)
+
+      let rect = e.target.parentElement.getBoundingClientRect();
+      const xOffset = e.clientX - rect.left;
+      const yOffset = e.clientY - rect.top;
+      let stateObj = {};
+      if (type === "bottom") {
+        stateObj = {
+          isBottomDragging: true,
+          isTopDragging: false,
+          bottomX: `${xOffset}px`,
+          bottomY: `${yOffset}px`
+        }
+      } else if (type === "top") {
+        stateObj = {
+          isTopDragging: true,
+          isBottomDragging: false,
+          topX: `${xOffset}px`,
+          topY: `${yOffset}px`
+        }
+      }
+      return stateObj;
+    }
+  
+    const handleMouseDown = (e, type) => {
+      const stateObj = getStateObj(e, type);
+      document.addEventListener('mousemove', (event) => handleMouseMove(event, type));
+      setCoordinates(stateObj)
+    }
+  
+    const handleMouseMove = (e, type) => {
+      if (coordinates.isTopDragging || coordinates.isBottomDragging) {
+        let stateObj = {};
+        if (type === "bottom" && coordinates.isBottomDragging) {
+          stateObj = getStateObj(e, type);
+        } else if (type === "top" && coordinates.isTopDragging){
+          stateObj = getStateObj(e, type);
+        }
+        setCoordinates(stateObj) 
+      }
+    };
+  
+    const handleMouseUp = (event, type) => {
+      setCoordinates({
+        ...coordinates,
+        isBottomDragging: false,
+        isTopDragging: false
+      })
+      document.removeEventListener('mousemove', handleMouseMove);
+      // const stateObj = getStateObj(event, type);
+      // stateObj.isBottomDragging = false
+      // stateObj.isTopDragging = false
+      // console.log(stateObj)
+      // const newLocation = {
+      //   isBottomDragging: false,
+      //   isTopDragging: false
+      // }
+      // this.setState({
+      //   isTopDragging: false,
+      //   isBottomDragging: false
+      // });
+      // setTopToggle(false)
+      // setBottomToggle(false)
+    }
 
     //console.log()
     return(
@@ -52,32 +132,34 @@ function Meme(props){
               width={newWidth}
               id="svg_ref"
               height={newHeight}
-            //   ref={el => { this.svgRef = el }}
+              ref={el => { let svgRef = el }}
               xmlns="http://www.w3.org/2000/svg"
               xmlnsXlink="http://www.w3.org/1999/xlink">
               <image
-                // ref={el => { this.imageRef = el }}
+                ref={el => { let imageRef = el }}
                 xlinkHref={props.meme.url}
                 height={newHeight}
                 width={newWidth}
               />
               <text
-                x={topX}
-                y={topY}
+                style={textStyle}
+                x={coordinates.topX}
+                y={coordinates.topY}
                 dominantBaseline="middle"
                 textAnchor="middle"
-                onMouseDown={event => this.handleMouseDown(event, 'top')}
-                onMouseUp={event => this.handleMouseUp(event, 'top')}
+                onMouseDown={event => handleMouseDown(event, 'top')}
+                onMouseUp={event => handleMouseUp(event, 'top')}
               >
                   {toptext}
               </text>
               <text
+                style={textStyle}
                 dominantBaseline="middle"
                 textAnchor="middle"
-                x={bottomX}
-                y={bottomY}
-                onMouseDown={event => this.handleMouseDown(event, 'bottom')}
-                onMouseUp={event => this.handleMouseUp(event, 'bottom')}
+                x={coordinates.bottomX}
+                y={coordinates.bottomY}
+                onMouseDown={event => handleMouseDown(event, 'bottom')}
+                onMouseUp={event => handleMouseUp(event, 'bottom')}
               >
                   {bottomtext}
               </text>
