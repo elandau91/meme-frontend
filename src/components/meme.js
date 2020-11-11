@@ -40,13 +40,14 @@ function Meme(props){
 
 
     const getStateObj = (e, type) => {
-      console.log(e.target.parentElement)
+      //console.log(e.target.parentElement)
 
       let rect = e.target.parentElement.getBoundingClientRect();
       const xOffset = e.clientX - rect.left;
       const yOffset = e.clientY - rect.top;
       let stateObj = {};
       if (type === "bottom") {
+        console.log("bottom")
         stateObj = {
           isBottomDragging: true,
           isTopDragging: false,
@@ -54,6 +55,7 @@ function Meme(props){
           bottomY: `${yOffset}px`
         }
       } else if (type === "top") {
+        console.log("top")
         stateObj = {
           isTopDragging: true,
           isBottomDragging: false,
@@ -65,12 +67,14 @@ function Meme(props){
     }
   
     const handleMouseDown = (e, type) => {
+      console.log("down")
       const stateObj = getStateObj(e, type);
       document.addEventListener('mousemove', (event) => handleMouseMove(event, type));
       setCoordinates(stateObj)
     }
   
     const handleMouseMove = (e, type) => {
+      console.log("hi")
       if (coordinates.isTopDragging || coordinates.isBottomDragging) {
         let stateObj = {};
         if (type === "bottom" && coordinates.isBottomDragging) {
@@ -83,26 +87,20 @@ function Meme(props){
     };
   
     const handleMouseUp = (event, type) => {
-      setCoordinates({
-        ...coordinates,
-        isBottomDragging: false,
-        isTopDragging: false
-      })
-      document.removeEventListener('mousemove', handleMouseMove);
-      // const stateObj = getStateObj(event, type);
-      // stateObj.isBottomDragging = false
-      // stateObj.isTopDragging = false
-      // console.log(stateObj)
-      // const newLocation = {
-      //   isBottomDragging: false,
-      //   isTopDragging: false
-      // }
-      // this.setState({
-      //   isTopDragging: false,
-      //   isBottomDragging: false
-      // });
-      // setTopToggle(false)
-      // setBottomToggle(false)
+      console.log("up")
+      let stateObj = {...coordinates}
+      if (type === "bottom") {
+        stateObj.isBottomDragging = false
+      } else if (type === "top"){
+        stateObj.isTopDragging = false
+      }
+      //document.removeEventListener('mousemove', () => handleMouseMove);
+      console.log("gone?")
+      console.log(stateObj)
+        document.addEventListener('mousemove', function (handleMouseMove) {
+          handleMouseMove.stopPropagation();
+      }, true);
+      setCoordinates(stateObj)
     }
 
     //console.log()
